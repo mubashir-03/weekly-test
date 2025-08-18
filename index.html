@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Weekly Test Portal | Academic Excellence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #475569;
+            --light: #f8fafc;
+            --lighter: #f1f5f9;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-radius: 10px;
+            --border-radius-sm: 6px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--lighter);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--darker);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: var(--darker);
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #f8fafc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+            color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .question-container.hidden {
+            display: none;
+        }
+        .question-container {
+            display: block;
+        }
+
+        .question-card {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            color: var(--darker);
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #f8fafc;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background-color: white;
+        }
+
+        .option input {
+            width: auto;
+            margin-right: 1rem;
+            padding: 0;
+            height: 18px;
+            width: 18px;
+        }
+
+        .progress-container {
+            margin-bottom: 2.5rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 5px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .unavailable-message {
+            text-align: center;
+            padding: 3rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .unavailable-message i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .unavailable-message h2 {
+            color: var(--darker);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .unavailable-message p {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .test-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--darker);
+            font-size: 1.8rem;
+        }
+
+        .student-info {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .student-info strong {
+            color: var(--dark);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--darker);
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .card {
+                padding: 1.75rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .test-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Animation for showing containers */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-laptop-code"></i>
+            <span>CS Test Portal</span>
+        </div>
+
+        <div class="header">
+            <h1>Weekly Computer Science Assessment</h1>
+            <p>Test your knowledge and track your academic progress with our comprehensive evaluation system</p>
+        </div>
+
+        <div id="unavailable-container" class="card unavailable-message hidden animate-in">
+            <i class="fas fa-calendar-times"></i>
+            <h2>Assessment Not Available</h2>
+            <p>The weekly computer science test is only accessible on designated days (Monday and Friday) between 9:00 AM and 10:00 AM.</p>
+            <p>Please return during the scheduled assessment window to participate.</p>
+        </div>
+
+        <div id="login-container" class="card animate-in">
+            <h2 style="margin-bottom: 1.5rem; color: var(--darker);">Student Registration</h2>
+            <p style="margin-bottom: 2rem; color: var(--secondary);">Please provide your academic details to commence the assessment</p>
+            
+            <form id="student-form">
+                <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input type="text" id="student-name" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="roll-number">Student ID Number</label>
+                    <input type="text" id="roll-number" required placeholder="Enter your student ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="class">Academic Year</label>
+                    <select id="class" required>
+                        <option value="" disabled selected>Select your academic year</option>
+                        <option value="1st Year">First Year</option>
+                        <option value="2nd Year">Second Year</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="father-name">Parent/Guardian Name</label>
+                    <input type="text" id="father-name" required placeholder="Enter parent/guardian name">
+                </div>
+                
+                <button type="submit" class="btn" id="start-test-btn">
+                    <span id="btn-text">Begin Assessment</span>
+                    <span id="btn-loader" class="hidden" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </form>
+        </div>
+
+        <div id="test-container" class="question-container hidden">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Computer Science Assessment</span>
+                    <span id="progress-text">Question 1 of 20</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="test-header">
+                    <h2>Multiple Choice Questions</h2>
+                    <div class="student-info">
+                        <div><strong>Student:</strong> <span id="display-name">-</span></div>
+                        <div><strong>ID:</strong> <span id="display-id">-</span></div>
+                    </div>
+                </div>
+                
+                <form id="test-form">
+                    <div id="questions-container"></div>
+                    
+                    <button type="submit" id="submit-btn" class="btn" disabled>
+                        <span id="submit-text">Submit Assessment</span>
+                        <span id="submit-loader" class="hidden" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="result-container" class="card hidden animate-in" style="text-align: center;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1.5rem;"></i>
+            <h2 style="margin-bottom: 1rem; color: var(--darker);">Assessment Submitted</h2>
+            <p style="color: var(--secondary); margin-bottom: 2.5rem;">Your test has been successfully recorded. Results will be available through official channels.</p>
+            <div id="result-details" style="display: none;"></div>
+            
+            <button class="btn btn-secondary" onclick="location.reload()">
+                <i class="fas fa-redo" style="margin-right: 8px;"></i> Return to Home
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced sample questions
+        const questions = [
+            {
+                question: "What is the time complexity of binary search algorithm in Big-O notation?",
+                options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+                answer: 1,
+                explanation: "Binary search has O(log n) complexity because it halves the search space with each comparison."
+            },
+            {
+                question: "Which data structure follows the FIFO (First-In-First-Out) principle?",
+                options: ["Stack", "Queue", "Binary Tree", "Graph"],
+                answer: 1,
+                explanation: "Queues follow FIFO, while stacks follow LIFO (Last-In-First-Out)."
+            },
+            {
+                question: "In object-oriented programming, what is the process of creating a new class from an existing class called?",
+                options: ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+                answer: 1,
+                explanation: "Inheritance allows a new class to adopt properties and methods of an existing class."
+            },
+            {
+                question: "Which protocol is used for secure communication over a computer network?",
+                options: ["HTTP", "FTP", "HTTPS", "SMTP"],
+                answer: 2,
+                explanation: "HTTPS (HyperText Transfer Protocol Secure) encrypts data using SSL/TLS."
+            },
+            {
+                question: "What does the 'ACID' property in database systems stand for?",
+                options: [
+                    "Atomicity, Consistency, Isolation, Durability",
+                    "Accuracy, Consistency, Integrity, Durability",
+                    "Atomicity, Concurrency, Integrity, Durability",
+                    "Availability, Consistency, Isolation, Durability"
+                ],
+                answer: 0,
+                explanation: "ACID properties ensure reliable processing of database transactions."
+            },
+            {
+                question: "Which sorting algorithm has the worst-case time complexity of O(n log n)?",
+                options: ["Bubble Sort", "Quick Sort", "Merge Sort", "Insertion Sort"],
+                answer: 2,
+                explanation: "Merge Sort consistently performs at O(n log n) in all cases."
+            },
+            {
+                question: "What is the default port number for HTTP web servers?",
+                options: ["80", "443", "8080", "21"],
+                answer: 0,
+                explanation: "HTTP typically uses port 80, while HTTPS uses port 443."
+            },
+            {
+                question: "In Python, what is the output of 'print(3 * '7')'?",
+                options: ["21", "777", "'21'", "Error"],
+                answer: 1,
+                explanation: "Multiplying a string by an integer repeats the string that many times."
+            },
+            {
+                question: "Which of these is NOT a fundamental data structure?",
+                options: ["Array", "Linked List", "Object", "Queue"],
+                answer: 2,
+                explanation: "While objects are important, they're not considered a fundamental data structure in the classical sense."
+            },
+            {
+                question: "What does CSS stand for in web development?",
+                options: [
+                    "Computer Style Sheets",
+                    "Cascading Style Sheets",
+                    "Creative Style System",
+                    "Content Styling Sheets"
+                ],
+                answer: 1,
+                explanation: "CSS stands for Cascading Style Sheets, used for styling web pages."
+            },
+            {
+                question: "Which algorithm is used to find the shortest path in a weighted graph?",
+                options: ["Breadth-First Search", "Depth-First Search", "Dijkstra's Algorithm", "Binary Search"],
+                answer: 2,
+                explanation: "Dijkstra's algorithm finds the shortest path between nodes in a graph."
+            },
+            {
+                question: "What is the main purpose of an operating system?",
+                options: [
+                    "To manage hardware resources",
+                    "To provide internet access",
+                    "To create documents",
+                    "To play multimedia files"
+                ],
+                answer: 0,
+                explanation: "The primary purpose of an OS is to manage computer hardware and software resources."
+            },
+            {
+                question: "Which language is primarily used for Android app development?",
+                options: ["Swift", "Kotlin", "C#", "Ruby"],
+                answer: 1,
+                explanation: "While Java was traditionally used, Kotlin is now the preferred language for Android development."
+            },
+            {
+                question: "What does SQL stand for?",
+                options: [
+                    "Structured Query Language",
+                    "Simple Query Language",
+                    "Standard Query Language",
+                    "System Query Language"
+                ],
+                answer: 0,
+                explanation: "SQL is the standard language for relational database management systems."
+            },
+            {
+                question: "Which principle suggests that a class should have only one reason to change?",
+                options: [
+                    "DRY (Don't Repeat Yourself)",
+                    "KISS (Keep It Simple, Stupid)",
+                    "SOLID's Single Responsibility Principle",
+                    "YAGNI (You Aren't Gonna Need It)"
+                ],
+                answer: 2,
+                explanation: "The Single Responsibility Principle is part of the SOLID principles of OOP."
+            },
+            {
+                question: "What is the binary representation of the decimal number 10?",
+                options: ["1000", "1010", "1100", "1110"],
+                answer: 1,
+                explanation: "Binary 1010 equals decimal 10 (8 + 0 + 2 + 0)."
+            },
+            {
+                question: "Which of these is NOT a JavaScript framework?",
+                options: ["React", "Angular", "Vue", "Django"],
+                answer: 3,
+                explanation: "Django is a Python web framework, not a JavaScript framework."
+            },
+            {
+                question: "What is the time complexity of accessing an element in an array by index?",
+                options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+                answer: 0,
+                explanation: "Array access by index is constant time O(1) because it uses direct memory addressing."
+            },
+            {
+                question: "Which HTTP status code indicates 'Not Found'?",
+                options: ["200", "301", "404", "500"],
+                answer: 2,
+                explanation: "404 is the HTTP status code for 'Not Found' errors."
+            },
+            {
+                question: "In version control systems, what does 'git clone' do?",
+                options: [
+                    "Creates a new branch",
+                    "Copies a repository to your local machine",
+                    "Merges two branches",
+                    "Deletes a repository"
+                ],
+                answer: 1,
+                explanation: "'git clone' is used to create a local copy of a remote repository."
+            }
+        ];
+
+        // Check if test is available (Mondays and Fridays between 9-10 AM)
+        function isTestAvailable() {
+            return true; // For testing purposes - remove this line in production
+            /*
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Convert current time to total minutes for easier comparison
+            const currentTimeInMinutes = hours * 60 + minutes;
+            const startTime = 9 * 60; // 9:00 AM in minutes
+            const endTime = 10 * 60;  // 10:00 AM in minutes
+            
+            // Test is available on Monday (1) and Friday (5) between 9-10 AM
+            return (day === 1 || day === 5) && 
+                   currentTimeInMinutes >= startTime && 
+                   currentTimeInMinutes < endTime;
+            */
+        }
+
+        // DOM elements
+        const unavailableContainer = document.getElementById('unavailable-container');
+        const loginContainer = document.getElementById('login-container');
+        const testContainer = document.getElementById('test-container');
+        const resultContainer = document.getElementById('result-container');
+        const studentForm = document.getElementById('student-form');
+        const testForm = document.getElementById('test-form');
+        const questionsContainer = document.getElementById('questions-container');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDetails = document.getElementById('result-details');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoader = document.getElementById('btn-loader');
+        const submitText = document.getElementById('submit-text');
+        const submitLoader = document.getElementById('submit-loader');
+        const displayName = document.getElementById('display-name');
+        const displayId = document.getElementById('display-id');
+
+        // Initialize the app
+        function init() {
+            if (isTestAvailable()) {
+                loginContainer.classList.remove('hidden');
+                unavailableContainer.classList.add('hidden');
+                testContainer.classList.add('hidden');
+            } else {
+                unavailableContainer.classList.remove('hidden');
+                loginContainer.classList.add('hidden');
+                testContainer.classList.add('hidden');
+            }
+            
+            renderQuestions();
+        }
+
+        // Render all questions
+        function renderQuestions() {
+            questionsContainer.innerHTML = ''; // Clear any existing questions
+            
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'options-container';
+                
+                q.options.forEach((option, optIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question-${index}`;
+                    input.id = `question-${index}-option-${optIndex}`;
+                    input.value = optIndex;
+                    
+                    input.addEventListener('change', function () {
+                        updateProgress();
+
+                        // Scroll to next question card if it exists
+                        const currentCard = optionDiv.closest('.question-card');
+                        const allCards = Array.from(document.querySelectorAll('.question-card'));
+                        const currentIndex = allCards.indexOf(currentCard);
+                        const nextCard = allCards[currentIndex + 1];
+                        if (nextCard) {
+                            nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else {
+                            // If last question, scroll to submit button
+                            submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `question-${index}-option-${optIndex}`;
+                    label.textContent = option;
+                    
+                    optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
+                    optionsContainer.appendChild(optionDiv);
+                });
+                
+                questionCard.appendChild(questionText);
+                questionCard.appendChild(optionsContainer);
+                questionsContainer.appendChild(questionCard);
+            });
+        }
+
+        // Update progress bar and check if all questions are answered
+        function updateProgress() {
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const totalQuestions = questions.length;
+            
+            // Update progress bar
+            const progressPercent = (answeredQuestions / totalQuestions) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+            
+            // Update progress text
+            progressText.textContent = `Question ${answeredQuestions} of ${totalQuestions}`;
+            
+            // Enable submit button if all questions are answered
+            submitBtn.disabled = answeredQuestions !== totalQuestions;
+        }
+
+        // Calculate grade based on marks
+        function calculateGrade(marks) {
+            if (marks >= 18) return 'A+';
+            if (marks >= 15) return 'A';
+            if (marks >= 12) return 'B';
+            if (marks >= 9) return 'C';
+            return 'Fail';
+        }
+
+        // Show loading state on button
+        function setLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'inline-block';
+            } else {
+                button.disabled = false;
+                btnText.style.display = 'inline-block';
+                btnLoader.style.display = 'none';
+            }
+        }
+
+        // Handle student form submission
+        studentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            setLoading(startTestBtn, true);
+            
+            // Simulate processing delay (remove in production)
+            setTimeout(() => {
+                // Get student info
+                const studentName = document.getElementById('student-name').value;
+                const rollNumber = document.getElementById('roll-number').value;
+                
+                // Display student info in test header
+                displayName.textContent = studentName;
+                displayId.textContent = rollNumber;
+                
+                // Hide login and show test
+                loginContainer.classList.add('hidden');
+                testContainer.classList.remove('hidden');
+                
+                // Reset button state
+                setLoading(startTestBtn, false);
+                
+                // Initialize progress bar
+                updateProgress();
+            }, 800);
+        });
+
+        // Handle test form submission
+        testForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoader.style.display = 'inline-block';
+            
+            // Calculate score
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (selectedOption && parseInt(selectedOption.value) === q.answer) {
+                    score++;
+                }
+            });
+            
+            // Calculate grade
+            const grade = calculateGrade(score);
+            
+            // Get student info
+            const studentName = document.getElementById('student-name').value;
+            const rollNumber = document.getElementById('roll-number').value;
+            const studentClass = document.getElementById('class').value;
+            const fatherName = document.getElementById('father-name').value;
+            
+            // For admin purposes (not shown to student)
+            resultDetails.innerHTML = `
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: var(--border-radius-sm); margin-bottom: 2rem; text-align: left;">
+                    <h3 style="margin-bottom: 1rem; color: var(--darker); border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">Assessment Results</h3>
+                    <p><strong>Student Name:</strong> ${studentName}</p>
+                    <p><strong>Roll Number:</strong> ${rollNumber}</p>
+                    <p><strong>Class:</strong> ${studentClass}</p>
+                    <p><strong>Parent/Guardian:</strong> ${fatherName}</p>
+                    <p style="margin-top: 1rem;"><strong>Score:</strong> ${score}/${questions.length}</p>
+                    <p><strong>Grade:</strong> ${grade}</p>
+                </div>
+            `;
+            
+            // Submit data to FormSubmit
+            const formData = {
+                'Student Name': studentName,
+                'Roll Number': rollNumber,
+                'Class': studentClass,
+                'Father Name': fatherName,
+                'Marks': `${score}/${questions.length}`,
+                'Grade': grade,
+                'Submission Time': new Date().toLocaleString()
+            };
+            
+            fetch('https://formsubmit.co/ajax/mkfd.71@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Submission successful:', data);
+                
+                // Show result container
+                testContainer.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Submission error:', error);
+                // Still show success to student even if submission fails
+                testContainer.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline-block';
+                submitLoader.style.display = 'none';
+            });
+        });
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
