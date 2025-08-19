@@ -373,7 +373,7 @@
                 
                 <div class="form-group">
                     <label for="roll-number">Student ID Number</label>
-                    <input type="text" id="roll-number" required placeholder="Enter your student ID">
+                    <input type="number" id="roll-number" required placeholder="Enter your ID number">
                 </div>
                 
                 <div class="form-group">
@@ -384,14 +384,10 @@
                         <option value="2nd Year">Second Year</option>
                     </select>
                 </div>
-                
-                <div class="form-group">
-                    <label for="father-name">Parent/Guardian Name</label>
-                    <input type="text" id="father-name" required placeholder="Enter parent/guardian name">
-                </div>
-                
+               
+           
                 <button type="submit" class="btn" id="start-test-btn">
-                    <span id="btn-text">Begin Assessment</span>
+                    <span id="btn-text"><i class="fas fa-fire"></i> Begin Assessment</span>
                     <span id="btn-loader" class="hidden" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
                 </button>
             </form>
@@ -414,6 +410,7 @@
                     <div class="student-info">
                         <div><strong>Student:</strong> <span id="display-name">-</span></div>
                         <div><strong>ID:</strong> <span id="display-id">-</span></div>
+                        <div><strong>Year:</strong> <span id="display-year">-</span></div>
                     </div>
                 </div>
                 
@@ -442,157 +439,256 @@
 
     <script>
         // Enhanced sample questions
-        const questions = [
-            {
-                question: "What is the time complexity of binary search algorithm in Big-O notation?",
-                options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-                answer: 1,
-                explanation: "Binary search has O(log n) complexity because it halves the search space with each comparison."
-            },
-            {
-                question: "Which data structure follows the FIFO (First-In-First-Out) principle?",
-                options: ["Stack", "Queue", "Binary Tree", "Graph"],
-                answer: 1,
-                explanation: "Queues follow FIFO, while stacks follow LIFO (Last-In-First-Out)."
-            },
-            {
-                question: "In object-oriented programming, what is the process of creating a new class from an existing class called?",
-                options: ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
-                answer: 1,
-                explanation: "Inheritance allows a new class to adopt properties and methods of an existing class."
-            },
-            {
-                question: "Which protocol is used for secure communication over a computer network?",
-                options: ["HTTP", "FTP", "HTTPS", "SMTP"],
-                answer: 2,
-                explanation: "HTTPS (HyperText Transfer Protocol Secure) encrypts data using SSL/TLS."
-            },
-            {
-                question: "What does the 'ACID' property in database systems stand for?",
-                options: [
-                    "Atomicity, Consistency, Isolation, Durability",
-                    "Accuracy, Consistency, Integrity, Durability",
-                    "Atomicity, Concurrency, Integrity, Durability",
-                    "Availability, Consistency, Isolation, Durability"
-                ],
-                answer: 0,
-                explanation: "ACID properties ensure reliable processing of database transactions."
-            },
-            {
-                question: "Which sorting algorithm has the worst-case time complexity of O(n log n)?",
-                options: ["Bubble Sort", "Quick Sort", "Merge Sort", "Insertion Sort"],
-                answer: 2,
-                explanation: "Merge Sort consistently performs at O(n log n) in all cases."
-            },
-            {
-                question: "What is the default port number for HTTP web servers?",
-                options: ["80", "443", "8080", "21"],
-                answer: 0,
-                explanation: "HTTP typically uses port 80, while HTTPS uses port 443."
-            },
-            {
-                question: "In Python, what is the output of 'print(3 * '7')'?",
-                options: ["21", "777", "'21'", "Error"],
-                answer: 1,
-                explanation: "Multiplying a string by an integer repeats the string that many times."
-            },
-            {
-                question: "Which of these is NOT a fundamental data structure?",
-                options: ["Array", "Linked List", "Object", "Queue"],
-                answer: 2,
-                explanation: "While objects are important, they're not considered a fundamental data structure in the classical sense."
-            },
-            {
-                question: "What does CSS stand for in web development?",
-                options: [
-                    "Computer Style Sheets",
-                    "Cascading Style Sheets",
-                    "Creative Style System",
-                    "Content Styling Sheets"
-                ],
-                answer: 1,
-                explanation: "CSS stands for Cascading Style Sheets, used for styling web pages."
-            },
-            {
-                question: "Which algorithm is used to find the shortest path in a weighted graph?",
-                options: ["Breadth-First Search", "Depth-First Search", "Dijkstra's Algorithm", "Binary Search"],
-                answer: 2,
-                explanation: "Dijkstra's algorithm finds the shortest path between nodes in a graph."
-            },
-            {
-                question: "What is the main purpose of an operating system?",
-                options: [
-                    "To manage hardware resources",
-                    "To provide internet access",
-                    "To create documents",
-                    "To play multimedia files"
-                ],
-                answer: 0,
-                explanation: "The primary purpose of an OS is to manage computer hardware and software resources."
-            },
-            {
-                question: "Which language is primarily used for Android app development?",
-                options: ["Swift", "Kotlin", "C#", "Ruby"],
-                answer: 1,
-                explanation: "While Java was traditionally used, Kotlin is now the preferred language for Android development."
-            },
-            {
-                question: "What does SQL stand for?",
-                options: [
-                    "Structured Query Language",
-                    "Simple Query Language",
-                    "Standard Query Language",
-                    "System Query Language"
-                ],
-                answer: 0,
-                explanation: "SQL is the standard language for relational database management systems."
-            },
-            {
-                question: "Which principle suggests that a class should have only one reason to change?",
-                options: [
-                    "DRY (Don't Repeat Yourself)",
-                    "KISS (Keep It Simple, Stupid)",
-                    "SOLID's Single Responsibility Principle",
-                    "YAGNI (You Aren't Gonna Need It)"
-                ],
-                answer: 2,
-                explanation: "The Single Responsibility Principle is part of the SOLID principles of OOP."
-            },
-            {
-                question: "What is the binary representation of the decimal number 10?",
-                options: ["1000", "1010", "1100", "1110"],
-                answer: 1,
-                explanation: "Binary 1010 equals decimal 10 (8 + 0 + 2 + 0)."
-            },
-            {
-                question: "Which of these is NOT a JavaScript framework?",
-                options: ["React", "Angular", "Vue", "Django"],
-                answer: 3,
-                explanation: "Django is a Python web framework, not a JavaScript framework."
-            },
-            {
-                question: "What is the time complexity of accessing an element in an array by index?",
-                options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-                answer: 0,
-                explanation: "Array access by index is constant time O(1) because it uses direct memory addressing."
-            },
-            {
-                question: "Which HTTP status code indicates 'Not Found'?",
-                options: ["200", "301", "404", "500"],
-                answer: 2,
-                explanation: "404 is the HTTP status code for 'Not Found' errors."
-            },
-            {
-                question: "In version control systems, what does 'git clone' do?",
-                options: [
-                    "Creates a new branch",
-                    "Copies a repository to your local machine",
-                    "Merges two branches",
-                    "Deletes a repository"
-                ],
-                answer: 1,
-                explanation: "'git clone' is used to create a local copy of a remote repository."
-            }
+        const firstYearQuestions = [
+           [
+    {
+        question: "What does CPU stand for?",
+        options: ["Central Processing Unit", "Computer Personal Unit", "Control Program Unit", "Central Program Utility"],
+        answer: 0,
+        explanation: "CPU stands for Central Processing Unit, which executes instructions in a computer."
+    },
+    {
+        question: "What is the brain of the computer?",
+        options: ["RAM", "CPU", "Hard Disk", "Monitor"],
+        answer: 1,
+        explanation: "CPU is considered the brain of the computer because it processes instructions."
+    },
+    {
+        question: "Which of these is a storage device?",
+        options: ["Monitor", "Keyboard", "Hard Disk", "Printer"],
+        answer: 2,
+        explanation: "Hard Disk is used to store data permanently."
+    },
+    {
+        question: "Which device is used to input data into a computer?",
+        options: ["Keyboard", "Printer", "Monitor", "Speaker"],
+        answer: 0,
+        explanation: "Keyboard is an input device used to enter data."
+    },
+    {
+        question: "Which of these is an output device?",
+        options: ["Keyboard", "Mouse", "Monitor", "Scanner"],
+        answer: 2,
+        explanation: "Monitor displays output from the computer."
+    },
+    {
+        question: "Which of the following is a programming language?",
+        options: ["HTML", "Python", "HTTP", "USB"],
+        answer: 1,
+        explanation: "Python is a programming language used to write software."
+    },
+    {
+        question: "What is the full form of HTML?",
+        options: ["HyperText Markup Language", "HighText Machine Language", "Hyper Transfer Markup Language", "HyperText Markdown Language"],
+        answer: 0,
+        explanation: "HTML stands for HyperText Markup Language used for creating web pages."
+    },
+    {
+        question: "Which of these is used to store temporary data while the computer is running?",
+        options: ["Hard Disk", "RAM", "ROM", "Printer"],
+        answer: 1,
+        explanation: "RAM temporarily stores data for programs currently in use."
+    },
+    {
+        question: "Which of these is non-volatile memory?",
+        options: ["RAM", "ROM", "Cache", "Registers"],
+        answer: 1,
+        explanation: "ROM is non-volatile, meaning it retains data even when the computer is turned off."
+    },
+    {
+        question: "Which of these is used to connect to the Internet?",
+        options: ["Router", "Printer", "Monitor", "Mouse"],
+        answer: 0,
+        explanation: "A router connects a computer or network to the Internet."
+    },
+    {
+        question: "Which of these is an example of an operating system?",
+        options: ["Windows", "Python", "HTML", "Chrome"],
+        answer: 0,
+        explanation: "Windows is an operating system that manages computer hardware and software."
+    },
+    {
+        question: "Which of these is used for calculations and processing in a computer?",
+        options: ["CPU", "Keyboard", "Monitor", "Mouse"],
+        answer: 0,
+        explanation: "CPU performs calculations and processing of instructions."
+    },
+    {
+        question: "Which of these is an input device used for pointing?",
+        options: ["Keyboard", "Mouse", "Monitor", "Printer"],
+        answer: 1,
+        explanation: "Mouse is an input device used to point, click, and interact with the computer."
+    },
+    {
+        question: "Which of these stores data permanently?",
+        options: ["RAM", "ROM", "Hard Disk", "Cache"],
+        answer: 2,
+        explanation: "Hard Disk stores data permanently."
+    },
+    {
+        question: "Which of these is an example of software?",
+        options: ["Monitor", "Printer", "Microsoft Word", "Mouse"],
+        answer: 2,
+        explanation: "Microsoft Word is software used to create documents."
+    },
+    {
+        question: "What is the full form of URL?",
+        options: ["Uniform Resource Locator", "Universal Resource Link", "Uniform Readable Language", "Universal Read Language"],
+        answer: 0,
+        explanation: "URL stands for Uniform Resource Locator, used to address web pages."
+    },
+    {
+        question: "Which of these is an example of a browser?",
+        options: ["Google Chrome", "Python", "Windows", "Linux"],
+        answer: 0,
+        explanation: "Google Chrome is a web browser used to access the internet."
+    },
+    {
+        question: "Which of these is used to store large amounts of data externally?",
+        options: ["RAM", "Hard Disk", "USB Drive", "CPU"],
+        answer: 2,
+        explanation: "USB Drive is an external storage device."
+    },
+    {
+        question: "Which of these is used to display text and images on the screen?",
+        options: ["Monitor", "Keyboard", "Mouse", "Printer"],
+        answer: 0,
+        explanation: "Monitor is an output device used to display data."
+    },
+    {
+        question: "Which of these is used to send data over a network?",
+        options: ["Keyboard", "Router", "Monitor", "Mouse"],
+        answer: 1,
+        explanation: "Router is used to send and receive data over a network."
+    }
+]
+
+        ];
+
+        const secondYearQuestions = [
+            [
+    {
+        question: "Which data structure uses LIFO (Last-In-First-Out) principle?",
+        options: ["Queue", "Stack", "Linked List", "Graph"],
+        answer: 1,
+        explanation: "Stack follows LIFO, where the last element inserted is the first to be removed."
+    },
+    {
+        question: "Which algorithm is used to find the shortest path in a weighted graph?",
+        options: ["DFS", "BFS", "Dijkstra's Algorithm", "Merge Sort"],
+        answer: 2,
+        explanation: "Dijkstra's Algorithm finds the shortest path between nodes in a weighted graph."
+    },
+    {
+        question: "Which of these is a NoSQL database?",
+        options: ["MySQL", "MongoDB", "Oracle", "PostgreSQL"],
+        answer: 1,
+        explanation: "MongoDB is a NoSQL database that stores data in flexible JSON-like documents."
+    },
+    {
+        question: "Which concept in OOP allows a function to behave differently based on the object calling it?",
+        options: ["Inheritance", "Polymorphism", "Encapsulation", "Abstraction"],
+        answer: 1,
+        explanation: "Polymorphism allows methods to have different behaviors based on the object instance."
+    },
+    {
+        question: "What is the purpose of the OSI model in networking?",
+        options: ["To organize protocols into layers", "To encrypt data", "To store files", "To debug software"],
+        answer: 0,
+        explanation: "The OSI model organizes network communication into seven layers for standardization."
+    },
+    {
+        question: "Which sorting algorithm is generally fastest for large datasets in average case?",
+        options: ["Bubble Sort", "Insertion Sort", "Quick Sort", "Selection Sort"],
+        answer: 2,
+        explanation: "Quick Sort has an average-case time complexity of O(n log n) and is efficient for large datasets."
+    },
+    {
+        question: "Which of the following is used to ensure data integrity in transactions?",
+        options: ["ACID", "FIFO", "LIFO", "CRUD"],
+        answer: 0,
+        explanation: "ACID properties (Atomicity, Consistency, Isolation, Durability) maintain data integrity."
+    },
+    {
+        question: "Which graph traversal algorithm uses a queue data structure?",
+        options: ["DFS", "BFS", "Dijkstra", "Prim"],
+        answer: 1,
+        explanation: "BFS (Breadth-First Search) uses a queue to traverse nodes level by level."
+    },
+    {
+        question: "Which type of memory is fastest but volatile?",
+        options: ["ROM", "RAM", "Cache", "Hard Disk"],
+        answer: 2,
+        explanation: "Cache memory is very fast but volatile; it loses data when power is off."
+    },
+    {
+        question: "Which SQL command is used to remove a table from a database?",
+        options: ["DELETE", "DROP", "TRUNCATE", "REMOVE"],
+        answer: 1,
+        explanation: "DROP TABLE completely deletes the table from the database."
+    },
+    {
+        question: "What is the main difference between TCP and UDP?",
+        options: ["TCP is connection-oriented, UDP is connectionless", "TCP is faster than UDP", "UDP guarantees delivery", "TCP uses no ports"],
+        answer: 0,
+        explanation: "TCP is connection-oriented and reliable; UDP is connectionless and faster but unreliable."
+    },
+    {
+        question: "Which OOP concept restricts access to class variables?",
+        options: ["Inheritance", "Encapsulation", "Polymorphism", "Abstraction"],
+        answer: 1,
+        explanation: "Encapsulation restricts access to data members using access modifiers like private and public."
+    },
+    {
+        question: "Which algorithm is used for searching in a sorted array?",
+        options: ["Linear Search", "Binary Search", "DFS", "BFS"],
+        answer: 1,
+        explanation: "Binary Search efficiently searches a sorted array by dividing the search space."
+    },
+    {
+        question: "Which of the following is a primary key constraint in databases?",
+        options: ["Ensures unique values for a column", "Allows NULL values", "Duplicates allowed", "None of these"],
+        answer: 0,
+        explanation: "Primary key ensures uniqueness and does not allow NULL values in a table column."
+    },
+    {
+        question: "Which networking device forwards data packets based on MAC addresses?",
+        options: ["Router", "Switch", "Hub", "Repeater"],
+        answer: 1,
+        explanation: "Switches forward data to the correct device using MAC addresses."
+    },
+    {
+        question: "Which of these is a divide and conquer algorithm?",
+        options: ["Bubble Sort", "Merge Sort", "Linear Search", "DFS"],
+        answer: 1,
+        explanation: "Merge Sort divides the array, sorts subarrays, and then merges them."
+    },
+    {
+        question: "Which data structure uses nodes connected by pointers?",
+        options: ["Array", "Linked List", "Queue", "Stack"],
+        answer: 1,
+        explanation: "Linked List stores data in nodes, each pointing to the next node."
+    },
+    {
+        question: "Which of the following is used for domain name resolution?",
+        options: ["DNS", "FTP", "HTTP", "SMTP"],
+        answer: 0,
+        explanation: "DNS (Domain Name System) translates domain names into IP addresses."
+    },
+    {
+        question: "Which of these is a logical data type in most programming languages?",
+        options: ["Integer", "Boolean", "Character", "String"],
+        answer: 1,
+        explanation: "Boolean represents True/False values."
+    },
+    {
+        question: "Which algorithm is used for finding minimum spanning trees in graphs?",
+        options: ["Dijkstra", "Prim", "Binary Search", "DFS"],
+        answer: 1,
+        explanation: "Prim's algorithm finds a minimum spanning tree for a weighted connected graph."
+    }
+]
+
         ];
 
         // Check if test is available (Mondays and Fridays between 9-10 AM)
@@ -607,7 +703,7 @@
             // Convert current time to total minutes for easier comparison
             const currentTimeInMinutes = hours * 60 + minutes;
             const startTime = 9 * 60; // 9:00 AM in minutes
-            const endTime = 22 * 60;  // 10:00 AM in minutes
+            const endTime = 24 * 60;  // 10:00 AM in minutes
             
             // Test is available on Monday (1) and Friday (5) between 9-10 AM
             return (day === 1 || day === 2 || day === 3|| day === 5) && 
@@ -635,6 +731,9 @@
         const submitLoader = document.getElementById('submit-loader');
         const displayName = document.getElementById('display-name');
         const displayId = document.getElementById('display-id');
+        const displayYear = document.getElementById('display-year');
+
+        let currentQuestions = []; // Store the current question set
 
         // Initialize the app
         function init() {
@@ -648,12 +747,13 @@
                 testContainer.classList.add('hidden');
             }
             
-            renderQuestions();
+            //renderQuestions(); //remove this
         }
 
         // Render all questions
-        function renderQuestions() {
+        function renderQuestions(questions) {
             questionsContainer.innerHTML = ''; // Clear any existing questions
+            currentQuestions = questions; // Update the current question set
             
             questions.forEach((q, index) => {
                 const questionCard = document.createElement('div');
@@ -671,6 +771,7 @@
                     optionDiv.className = 'option';
                     
                     const input = document.createElement('input');
+                    input.type = 'radio';
                     input.type = 'radio';
                     input.name = `question-${index}`;
                     input.id = `question-${index}-option-${optIndex}`;
@@ -710,7 +811,7 @@
         // Update progress bar and check if all questions are answered
         function updateProgress() {
             const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
-            const totalQuestions = questions.length;
+            const totalQuestions = currentQuestions.length; // Use currentQuestions.length
             
             // Update progress bar
             const progressPercent = (answeredQuestions / totalQuestions) * 100;
@@ -757,10 +858,12 @@
                 // Get student info
                 const studentName = document.getElementById('student-name').value;
                 const rollNumber = document.getElementById('roll-number').value;
-                
+                const selectedClass = document.getElementById('class').value;
+
                 // Display student info in test header
                 displayName.textContent = studentName;
                 displayId.textContent = rollNumber;
+                displayYear.textContent = selectedClass;
                 
                 // Hide login and show test
                 loginContainer.classList.add('hidden');
@@ -768,6 +871,15 @@
                 
                 // Reset button state
                 setLoading(startTestBtn, false);
+
+                let questionSet = [];
+               if (selectedClass === "1st Year") {
+    questionSet = firstYearQuestions[0];
+} else if (selectedClass === "2nd Year") {
+    questionSet = secondYearQuestions[0];
+}
+
+                renderQuestions(questionSet);
                 
                 // Initialize progress bar
                 updateProgress();
@@ -785,7 +897,7 @@
             
             // Calculate score
             let score = 0;
-            questions.forEach((q, index) => {
+            currentQuestions.forEach((q, index) => { // Use currentQuestions
                 const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
                 if (selectedOption && parseInt(selectedOption.value) === q.answer) {
                     score++;
@@ -809,7 +921,7 @@
                     <p><strong>Roll Number:</strong> ${rollNumber}</p>
                     <p><strong>Class:</strong> ${studentClass}</p>
                     <p><strong>Parent/Guardian:</strong> ${fatherName}</p>
-                    <p style="margin-top: 1rem;"><strong>Score:</strong> ${score}/${questions.length}</p>
+                    <p style="margin-top: 1rem;"><strong>Score:</strong> ${score}/${currentQuestions.length}</p>
                     <p><strong>Grade:</strong> ${grade}</p>
                 </div>
             `;
@@ -820,7 +932,7 @@
                 'Roll Number': rollNumber,
                 'Class': studentClass,
                 'Father Name': fatherName,
-                'Marks': `${score}/${questions.length}`,
+                'Marks': `${score}/${currentQuestions.length}`,
                 'Grade': grade,
                 'Submission Time': new Date().toLocaleString()
             };
