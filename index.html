@@ -357,9 +357,8 @@
         <div id="unavailable-container" class="card unavailable-message hidden animate-in">
             <i class="fas fa-calendar-times"></i>
             <h2>Assessment Not Available</h2>
-            <p>The weekly computer science test is only accessible on designated days (Monday, Tuesday, and Friday) between 9:00 AM and 12:00 PM (server time).</p>
+            <p>The weekly computer science test is only accessible on designated days (Monday and Friday) between 9:00 AM and 10:00 AM.</p>
             <p>Please return during the scheduled assessment window to participate.</p>
-            <div id="debug-info" style="margin-top:1.5rem; color:#888; font-size:0.95em;"></div>
         </div>
 
         <div id="login-container" class="card animate-in">
@@ -596,43 +595,26 @@
             }
         ];
 
-       // ...existing code...
-// Fetch current time from your local backend and check test availability
-async function checkTestAvailability() {
-    try {
-        const response = await fetch('http://localhost:3000/api/karachi-time');
-        if (!response.ok) throw new Error('Failed to fetch time');
-        const data = await response.json();
-        const now = new Date(data.datetime);
-        const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const currentTimeInMinutes = hours * 60 + minutes;
-        const startTime = 9 * 60; // 9:00 AM
-        const endTime = 12 * 60; // 12:00 PM
-        // Debug info
-        const debugDiv = document.getElementById('debug-info');
-        if (debugDiv) {
-            debugDiv.innerHTML =
-                `<b>Debug Info:</b><br>` +
-                `Server time: ${now.toLocaleString()}<br>` +
-                `Day: ${day} (0=Sun, 1=Mon, 2=Tue, 5=Fri)<br>` +
-                `Hour: ${hours}, Minute: ${minutes} (Total: ${currentTimeInMinutes})<br>` +
-                `Allowed window: 540-720 minutes`;
-        }
-        // Test is available on Monday (1), Tuesday (2), and Friday (5)
-        return (day === 1 || day === 2 || day === 5) &&
-            currentTimeInMinutes >= startTime &&
-            currentTimeInMinutes < endTime;
-    } catch (e) {
-        // If API fails, default to unavailable
-        const debugDiv = document.getElementById('debug-info');
-        if (debugDiv) debugDiv.textContent = 'Error fetching server time.';
-        return false;
-    }
-}
-// ...existing code...
+        // Check if test is available (Mondays and Fridays between 9-10 AM)
+        function isTestAvailable() {
+            
         
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Convert current time to total minutes for easier comparison
+            const currentTimeInMinutes = hours * 60 + minutes;
+            const startTime = 9 * 60; // 9:00 AM in minutes
+            const endTime = 22 * 60;  // 10:00 AM in minutes
+            
+            // Test is available on Monday (1) and Friday (5) between 9-10 AM
+            return (day === 1 || day === 2 || day === 3|| day === 5) && 
+                   currentTimeInMinutes >= startTime && 
+                   currentTimeInMinutes < endTime;
+        
+        }
 
         // DOM elements
         const unavailableContainer = document.getElementById('unavailable-container');
@@ -655,24 +637,17 @@ async function checkTestAvailability() {
         const displayId = document.getElementById('display-id');
 
         // Initialize the app
-        async function init() {
-            // Show loading while checking
-            unavailableContainer.querySelector('h2').textContent = 'Checking Test Availability...';
-            unavailableContainer.classList.remove('hidden');
-            loginContainer.classList.add('hidden');
-            testContainer.classList.add('hidden');
-
-            const available = await checkTestAvailability();
-            if (available) {
+        function init() {
+            if (isTestAvailable()) {
                 loginContainer.classList.remove('hidden');
                 unavailableContainer.classList.add('hidden');
                 testContainer.classList.add('hidden');
             } else {
                 unavailableContainer.classList.remove('hidden');
-                unavailableContainer.querySelector('h2').textContent = 'Assessment Not Available';
                 loginContainer.classList.add('hidden');
                 testContainer.classList.add('hidden');
             }
+            
             renderQuestions();
         }
 
