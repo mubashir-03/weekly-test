@@ -597,8 +597,8 @@
 
         // Check if test is available (Mondays and Fridays between 9-10 AM)
         function isTestAvailable() {
-            return true; // For testing purposes - remove this line in production
-            /*
+         
+            
             const now = new Date();
             const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday
             const hours = now.getHours();
@@ -613,7 +613,7 @@
             return (day === 1 || day === 5) && 
                    currentTimeInMinutes >= startTime && 
                    currentTimeInMinutes < endTime;
-            */
+            
         }
 
         // DOM elements
@@ -859,4 +859,5 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
+
 </html>
