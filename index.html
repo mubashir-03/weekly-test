@@ -414,7 +414,7 @@
                     <div id="questions-container"></div>
                     
                     <button type="submit" id="submit-btn" class="btn" disabled>
-                        <span id="submit-text">Submit Assessment</span>
+                        <span id="submit-text"><i class="fas fa-paper-plane"></i> Assessment</span>
                         <span id="submit-loader" class="hidden" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
                     </button>
                 </form>
@@ -435,6 +435,31 @@
 
     <script>
         // Enhanced sample questions
+
+        // --- Auto-refresh logic for test window ---
+        function scheduleAutoRefresh() {
+            const now = new Date();
+            const day = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            // Test window: 9:00 AM to 10:00 AM
+            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
+            const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0);
+
+            let msToStart = startTime - now;
+            let msToEnd = endTime - now;
+
+            // If before start time, refresh at start
+            if (msToStart > 0) {
+                setTimeout(() => location.reload(), msToStart + 1000); // Add 1s buffer
+            }
+            // If during test window, refresh at end
+            else if (msToEnd > 0) {
+                setTimeout(() => location.reload(), msToEnd + 1000); // Add 1s buffer
+            }
+            // If after end time, do nothing (or could refresh at next day's start)
+        }
         const firstYearQuestions = [
            [
     {
@@ -845,38 +870,71 @@
         // Handle student form submission
         studentForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+            // Get roll number and validate
+            const rollNumber = document.getElementById('roll-number').value;
+            const rollNumInt = parseInt(rollNumber, 10);
+            if (isNaN(rollNumInt) || rollNumInt < 23251 || rollNumInt > 23300) {
+                // Show error popup
+                let popup = document.getElementById('roll-error-popup');
+                if (!popup) {
+                    popup = document.createElement('div');
+                    popup.id = 'roll-error-popup';
+                    popup.style.position = 'fixed';
+                    popup.style.top = '0';
+                    popup.style.left = '0';
+                    popup.style.width = '100vw';
+                    popup.style.height = '100vh';
+                    popup.style.background = 'rgba(0,0,0,0.25)';
+                    popup.style.display = 'flex';
+                    popup.style.alignItems = 'center';
+                    popup.style.justifyContent = 'center';
+                    popup.style.zIndex = '9999';
+                    popup.innerHTML = `
+                        <div style="background: white; padding: 2rem 2.5rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); position: relative; min-width: 320px; max-width: 90vw; text-align: center;">
+                            <button id="close-roll-error" style="position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 1.3rem; color: var(--danger); cursor: pointer;">
+                                &times;
+                            </button>
+                            <div style="color: var(--danger); font-weight: bold; font-size: 1.1rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                                Your roll number is wrong, or you are not registered with us.
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(popup);
+                    document.getElementById('close-roll-error').onclick = function() {
+                        popup.remove();
+                    };
+                }
+                setLoading(startTestBtn, false);
+                return;
+            } else {
+                // Remove popup if present
+                const popup = document.getElementById('roll-error-popup');
+                if (popup) popup.remove();
+            }
             // Show loading state
             setLoading(startTestBtn, true);
-            
             // Simulate processing delay (remove in production)
             setTimeout(() => {
                 // Get student info
                 const studentName = document.getElementById('student-name').value;
-                const rollNumber = document.getElementById('roll-number').value;
                 const selectedClass = document.getElementById('class').value;
-
                 // Display student info in test header
                 displayName.textContent = studentName;
                 displayId.textContent = rollNumber;
                 displayYear.textContent = selectedClass;
-                
                 // Hide login and show test
                 loginContainer.classList.add('hidden');
                 testContainer.classList.remove('hidden');
-                
                 // Reset button state
                 setLoading(startTestBtn, false);
-
                 let questionSet = [];
-               if (selectedClass === "1st Year") {
-    questionSet = firstYearQuestions[0];
-} else if (selectedClass === "2nd Year") {
-    questionSet = secondYearQuestions[0];
-}
-
+                if (selectedClass === "1st Year") {
+                    questionSet = firstYearQuestions[0];
+                } else if (selectedClass === "2nd Year") {
+                    questionSet = secondYearQuestions[0];
+                }
                 renderQuestions(questionSet);
-                
                 // Initialize progress bar
                 updateProgress();
             }, 800);
@@ -960,6 +1018,8 @@
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
+    // Schedule auto-refresh for test window
+    scheduleAutoRefresh();
     </script>
 </body>
 </html>
